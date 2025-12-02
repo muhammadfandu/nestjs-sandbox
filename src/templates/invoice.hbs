@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20mm; color: #333; }
+    
+    /* Headings with sizes & weights */
+    h1 { font-size: 24px; font-weight: bold; margin-bottom: 10px; }
+    h2 { font-size: 18px; font-weight: 600; margin: 20px 0 10px; }
+    h3 { font-size: 14px; font-weight: normal; color: #666; }
+    
+    /* Borders */
+    .section { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #eee; padding: 8px; text-align: left; }
+    th { background: #f8f8f8; font-weight: bold; }
+    
+    /* Icons (use SVG or images) */
+    .icon { width: 20px; height: 20px; vertical-align: middle; margin-right: 5px; }
+    
+    /* Images */
+    img.logo { width: 100px; height: auto; float: right; }
+    
+    /* Footer */
+    .footer { text-align: center; font-size: 12px; color: #999; margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <img src="{{logoUrl}}" class="logo" alt="Company Logo">
+  
+  <h1>Invoice {{invoiceId}}</h1>
+  <h3>Generated on {{date}}</h3>
+  
+  <div class="section">
+    <h2>Customer Details</h2>
+    <p><img src="https://img.icons8.com/ios-filled/20/user.png" class="icon">Name: {{customer.name}}</p>
+    <p><img src="https://img.icons8.com/ios-filled/20/email.png" class="icon">Email: {{customer.email}}</p>
+  </div>
+  
+  <div class="section">
+    <h2>Items</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each items}}
+        <tr>
+          <td>{{description}}</td>
+          <td>{{quantity}}</td>
+          <td>${{price}}</td>
+          <td>${{total}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="section">
+    <h2>Total: ${{total}}</h2>
+  </div>
+  
+  <div class="footer">
+    Thank you for your business! | Company Inc. | © 2025
+  </div>
+</body>
+</html>

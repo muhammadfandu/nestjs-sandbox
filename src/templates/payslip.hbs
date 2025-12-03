@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payslip {{formatMonthYear payroll.startDate}}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #212529;
+            line-height: 1.5;
+            background: white;
+        }
+
+        .payslip-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+        }
+
+        /* Header Section */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            background: linear-gradient(135deg, #2e5cb8 0%, #5078c9 100%);
+            padding: 20px 40px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .date-box {
+            border: 2px solid #2e5cb8;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-align: center;
+        }
+
+        .date-label {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .date-value {
+            font-size: 14px;
+            color: #212529;
+            font-weight: 600;
+        }
+
+        /* Title */
+        .title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        /* Employee Info */
+        .employee-info {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-label {
+            font-size: 16px;
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 16px;
+            color: #212529;
+            font-weight: 600;
+        }
+
+        .employee-id {
+            font-size: 14px;
+            color: #6c757d;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        /* Tables */
+        .section-table {
+            width: 100%;
+            margin-bottom: 30px;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .section-header {
+            background: #2e5cb8;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: 700;
+            text-align: left;
+        }
+
+        .section-header-amount {
+            text-align: right;
+            padding-right: 20px;
+        }
+
+        .table-row {
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .table-row:nth-child(odd) {
+            background: #ffffff;
+        }
+
+        .table-row.total-row {
+            background: #e7f1ff;
+            font-weight: 700;
+        }
+
+        .table-cell {
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #495057;
+        }
+
+        .table-cell-amount {
+            text-align: right;
+            font-weight: 600;
+            color: #212529;
+            padding-right: 20px;
+        }
+
+        /* Net Salary Section */
+        .net-salary-section {
+            margin-top: 40px;
+        }
+
+        .net-salary-header {
+            background: #2e5cb8;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        .footer-contact {
+            font-weight: 600;
+            color: #212529;
+        }
+
+        /* Print Optimization */
+        @media print {
+            .payslip-container {
+                border: none;
+                padding: 0;
+            }
+
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="payslip-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo-text">ONEPASS</div>
+            </div>
+            <div class="date-box">
+                <div class="date-label">Date</div>
+                <div class="date-value">{{formatDateRange payroll.startDate payroll.endDate}}</div>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h1 class="title">PAYSLIP {{formatMonthYear payroll.startDate}}</h1>
+
+        <!-- Employee Information -->
+        <div class="employee-info">
+            <div class="info-label">Name</div>
+            <div>
+                <div class="info-value">{{user.name}}</div>
+                <div class="employee-id">{{user.id}}</div>
+            </div>
+
+            <div class="info-label">Department</div>
+            <div class="info-value">{{user.departmentName}}</div>
+
+            <div class="info-label">Role</div>
+            <div class="info-value">{{user.roleName}}</div>
+        </div>
+
+        <!-- Earnings Table -->
+        <table class="section-table">
+            <thead>
+                <tr>
+                    <th class="section-header">Earnings</th>
+                    <th class="section-header section-header-amount">Amount (SGD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-row">
+                    <td class="table-cell">Base Salary</td>
+                    <td class="table-cell-amount">{{formatCurrency baseSalary}}</td>
+                </tr>
+                <tr class="table-row">
+                    <td class="table-cell">Overtime Salary</td>
+                    <td class="table-cell-amount">{{formatCurrency overtimeSalary}}</td>
+                </tr>
+                {{#each (filterEarnings components)}}
+                <tr class="table-row">
+                    <td class="table-cell">{{payComponentConfig.name}}</td>
+                    <td class="table-cell-amount">{{formatCurrency amount}}</td>
+                </tr>
+                {{/each}}
+                <tr class="table-row total-row">
+                    <td class="table-cell">TOTAL EARNINGS</td>
+                    <td class="table-cell-amount">{{formatCurrency totalEarnings}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Deductions Table -->
+        <table class="section-table">
+            <thead>
+                <tr>
+                    <th class="section-header">Deductions</th>
+                    <th class="section-header section-header-amount">Amount (SGD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each (filterDeductions components)}}
+                <tr class="table-row">
+                    <td class="table-cell">{{payComponentConfig.name}}</td>
+                    <td class="table-cell-amount">{{formatCurrency amount}}</td>
+                </tr>
+                {{/each}}
+                <tr class="table-row total-row">
+                    <td class="table-cell">TOTAL DEDUCTIONS</td>
+                    <td class="table-cell-amount">{{formatCurrency totalDeduction}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Net Salary Table -->
+        <table class="section-table net-salary-section">
+            <thead>
+                <tr>
+                    <th class="section-header net-salary-header">Net Salary</th>
+                    <th class="section-header section-header-amount net-salary-header">Amount (SGD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-row">
+                    <td class="table-cell">Total Earnings</td>
+                    <td class="table-cell-amount">{{formatCurrency totalEarnings}}</td>
+                </tr>
+                <tr class="table-row">
+                    <td class="table-cell">Total Deductions</td>
+                    <td class="table-cell-amount">{{formatCurrency totalDeduction}}</td>
+                </tr>
+                <tr class="table-row total-row">
+                    <td class="table-cell">Net Salary</td>
+                    <td class="table-cell-amount">{{formatCurrency totalSalary}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Footer -->
+        <div class="footer">
+            If you need further assistance, please feel free to contact HR at <span class="footer-contact">{{hrEmail}}</span>
+        </div>
+    </div>
+</body>
+</html>
